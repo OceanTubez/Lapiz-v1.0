@@ -5,7 +5,8 @@ config.Settings = {
   Firemode = "Semi", -- Can be any of these: Auto, Semi
   Firerate = 0.1, -- In seconds (how many secs per bullet for auto)
   BaseDamage = 20, -- Damage for all body parts excluding head
-  AmmoPerMag = 12, -- Ammo per magazine before having to reload
+  AmmoPerMag = 12, -- Ammo per magazine before having to reload (also includes starting ammo)
+  MaxAmmoPerMag = 12, -- max ammo per magazine
   
   -- Reload configuration
   
