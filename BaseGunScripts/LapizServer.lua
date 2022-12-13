@@ -42,6 +42,41 @@ local function fireweapon(plr, mospos)
 
 end
 
+caster.RayHit:Connect(function(cast, result, velocity, bullet)
+
+	local hit = result.Instance
+
+	local char = hit:FindFirstAncestorWhichIsA("Model")
+
+	local human = char:FindFirstChild("Humanoid")
+
+	if char and human then
+		
+		if hit.Name == "Head" and config.HeadshotDamageEnabled then
+		
+			human:TakeDamage(config.HeadshotDamage)
+
+		elseif hit.Name == "Head" and config.HeadshotMultiEnabled then
+
+			human:TakeDamage(config.BaseDamage * config.HeadMultiplier)
+
+		elseif hit.Name == "Head" and config.HeadshotDamageEnabled and config.HeadshotMultiEnabled then
+
+			warn("Error Code L4: Headshot damage settings colliding values(check documentation for more info)")
+		
+		elseif hit.Name == "Head" and config.HeadshotMultiEnabled == false and config.HeadshotDamageEnabled == false then
+
+			human:TakeDamage(config.BaseDamage)
+
+		elseif hit.Name ~= "Head" then
+
+			human:TakeDamage(config.BaseDamage)
+
+		end
+	end
+
+end)
+
 local Remotes = {
 	ChangeMagAmmo = remotefold:WaitForChild("ChangeMagAmmo"),
 	Shoot = remotefold:WaitForChild("Shoot"),
@@ -150,7 +185,7 @@ tool.Equipped:Connect(function()
 
 			elseif config.ReloadAnimationLengthEnabled == true and config.
 
-				warn("Error L3: Reload Time colliding values (refer to documentation for more info)")
+				warn("Error Code L3: Reload Time colliding values (refer to documentation for more info)")
 
 			end
 	
@@ -187,7 +222,7 @@ tool.Equipped:Connect(function()
 		LoadedShoot:Stop()
 		game.ReplicatedStorage.Remote.DisconnectM6D:FireServer()
 		
-	end)
+	end)i
 
 	
 end)
