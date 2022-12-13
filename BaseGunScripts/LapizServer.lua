@@ -134,27 +134,46 @@ tool.Equipped:Connect(function()
 
 	Remotes.ChangeMagAmmo.OnServerEvent:Connect(function(plr)
 
-		IsReloading = true
+		if not IsReloading then
+			IsReloading = true
 
-		LoadedReload:Play()
-		reloadsound:Play()
+			LoadedReload:Play()
+			reloadsound:Play()
 
-		local amounttochange = maxAmmo.Value - curAmmo.Value
+			if config.ReloadTimeEnabled == true then
 
-		spareAmmo.Value -= amounttochange
-		curAmmo.Value = maxAmmo.Value
+				task.wait(config.ReloadTime)
 
-		IsReloading = false
+			elseif config.ReloadAnimationLengthEnabled == true then
+
+				task.wait(LoadedReload.Length)
+
+			elseif config.ReloadAnimationLengthEnabled == true and config.
+
+			end
+	
+			local amounttochange = maxAmmo.Value - curAmmo.Value
+	
+			spareAmmo.Value -= amounttochange
+			curAmmo.Value = maxAmmo.Value
+	
+			IsReloading = false
+		end
 
 	end)
 
 	Remotes.Inspect.OnServerEvent:Connect(function(plr)
 
-		IsInspecting = true
+		if not IsInspecting then
+			IsInspecting = true
 
-		inspectsound:Play()
-		LoadedInspect:Play()
-		
+			inspectsound:Play()
+			LoadedInspect:Play()
+	
+			task.wait(LoadedInspect.Length)
+	
+			IsInspecting = false
+		end
 
 	end
 
