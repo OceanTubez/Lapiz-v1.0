@@ -24,7 +24,7 @@ local config = settingmodule.Settings
 -- Setting up sounds
 
 local firesound = soundfolder:WaitForChild("FireSound")
-local reloadSound = soundfolder:WaitForChild("ReloadSound")
+local reloadsound = soundfolder:WaitForChild("ReloadSound")
 local inspectsound = soundfolder:WaitForChild("InspectSound")
 
 -- Setting up fastcast
@@ -132,6 +132,9 @@ tool.Equipped:Connect(function()
 	Remotes.ChangeMagAmmo.OnServerEvent:Connect(function(plr)
 
 		LoadedReload:Play()
+		reloadsound:Play()
+
+		
 
 	end)
 
