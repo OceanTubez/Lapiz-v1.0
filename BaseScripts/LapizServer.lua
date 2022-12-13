@@ -51,7 +51,8 @@ Anims.InspectAnim.AnimationId = config.InspectAnimation
 
 tool.Equipped:Connect(function()
 	
-	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L5: Unable to detect FirePoint. (refer to documentation for more info)")
+	if not config.GunModel:IsA("Model") then warn("Error Code L1: Unable to detect GunModel. (refer to documentation for more info)")
+ 	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L5: Unable to detect FirePoint. (refer to documentation for more info)")
 	
 	local char = tool.Parent
 	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
@@ -66,6 +67,7 @@ tool.Equipped:Connect(function()
 	local LoadedInspect = humanoid:LoadAnimation(Anims.InspectAnim)
 	
 	LoadedIdle:Play()
+	
 	
 end)
 
