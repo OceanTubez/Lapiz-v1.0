@@ -9,8 +9,8 @@ Lapiz Gun System (server)
 --]]
 local tool = script.Parent
 local assets = tool:WaitForChild("Assets")
-
-local handle = tool:WaitForChild("Handle")
+local animfolder = tool:WaitForChild("Animations")
+local remotefold = tool:WaitForChild("Events")
 
 local settingmodule = require(tool:WaitForChild("Configuration"))
 local FastCast = require(assets:WaitForChild("FastCastRedux"))
@@ -18,17 +18,17 @@ local FastCast = require(assets:WaitForChild("FastCastRedux"))
 local config = settingmodule.Settings
 
 local Remotes = {
-  ChangeMagAmmo = tool:WaitForChild("ChangeMagAmmo"),
-  Shoot = tool:WaitForChild("Shoot"),
-  Inspect = tool:WaitForChild("Inspect")
+	ChangeMagAmmo = remotefold:WaitForChild("ChangeMagAmmo"),
+	Shoot = remotefold:WaitForChild("Shoot"),
+	Inspect = remotefold:WaitForChild("Inspect")
 }
 
 -- Setting up ammo
 
-local curAmmo = handle:WaitForChild("Ammo")
-local maxAmmo = handle:WaitForChild("MaxAmmo")
-local spareAmmo = handle:WaitForChild("SpareAmmo")
-local maxspareAmmo = handle:WaitForChild("MaxSpareAmmo")
+local curAmmo = tool:WaitForChild("Ammo")
+local maxAmmo = tool:WaitForChild("MaxAmmo")
+local spareAmmo = tool:WaitForChild("SpareAmmo")
+local maxspareAmmo = tool:WaitForChild("MaxSpareAmmo")
 
 curAmmo.Value = config.AmmoPerMag
 maxAmmo.Value = config.MaxAmmoPerMag
@@ -38,17 +38,28 @@ maxspareAmmo.Value = config.MaxAmmo
 -- Setting up animations
 
 local Anims = {
-  IdleAnim = tool:WaitForChild("Idle"),
-  ReloadAnim = tool:WaitForChild("Reload"),
-  InspectAnim = tool:WaitForChild("Inspect"),
-  ShootAnim = tool:WaitForChild("Shoot")
+	IdleAnim = animfolder:WaitForChild("Idle"),
+	ReloadAnim = animfolder:WaitForChild("Reload"),
+	InspectAnim = animfolder:WaitForChild("Inspect"),
+	ShootAnim = animfolder:WaitForChild("Shoot")
 }
 
 Anims.IdleAnim.AnimationId = config.IdleAnimation
+Anims.ReloadAnim.AnimationId = config.ReloadAnimation
+Anims.ShootAnim.AnimationId = config.FireAnimation
+Anims.InspectAnim.AnimationId = config.InspectAnimation
 
-Remotes.ChangeMagAmmo.OnServerEvent:Connect(function()
-    
-    
-    
+tool.Equipped:Connect(function()
+	
+	local char = tool.Parent
+	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
+	char.Torso.ToolGrip.Part0 = char.Torso
+	char.Torso.ToolGrip.Part1 = config.GunModel.BodyAttach
+	
 end)
 
+Remotes.ChangeMagAmmo.OnServerEvent:Connect(function()
+
+
+
+end)
