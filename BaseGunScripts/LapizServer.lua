@@ -80,7 +80,9 @@ end)
 local Remotes = {
 	ChangeMagAmmo = remotefold:WaitForChild("ChangeMagAmmo"),
 	Shoot = remotefold:WaitForChild("Shoot"),
-	Inspect = remotefold:WaitForChild("Inspect")
+	Inspect = remotefold:WaitForChild("Inspect"),
+	Update = remotefold:WaitForChild("Update"),
+	SetupGui = remotefold:WaitForChild("SetupGui")
 }
 
 -- Setting up ammo
@@ -94,6 +96,10 @@ curAmmo.Value = config.AmmoPerMag
 maxAmmo.Value = config.MaxAmmoPerMag
 spareAmmo.Value = config.StartingAmmo
 maxspareAmmo.Value = config.MaxAmmo
+
+-- Setting up update function
+
+
 
 -- Setting up animations
 
