@@ -11,11 +11,27 @@ local tool = script.Parent
 local assets = tool:WaitForChild("Assets")
 local animfolder = tool:WaitForChild("Animations")
 local remotefold = tool:WaitForChild("Events")
+local CanShoot = tool:WaitForChild("CanShoot")
 
 local settingmodule = require(tool:WaitForChild("Configuration"))
 local FastCast = require(assets:WaitForChild("FastCastRedux"))
 
 local config = settingmodule.Settings
+
+-- Setting up fastcast
+
+FastCast.VisualizeCasts = false
+
+local caster = FastCast.new()
+
+local function fireweapon(plr, mospos)
+
+	local origin = config.GunModel:WaitForChild("FirePoint").WorldPosition
+	local vectordirection = (mospos - origin).Unit
+
+	caster:Fire(origin, vectordirection, config.BulletSpeed)
+
+end
 
 local Remotes = {
 	ChangeMagAmmo = remotefold:WaitForChild("ChangeMagAmmo"),
@@ -49,10 +65,16 @@ Anims.ReloadAnim.AnimationId = config.ReloadAnimation
 Anims.ShootAnim.AnimationId = config.FireAnimation
 Anims.InspectAnim.AnimationId = config.InspectAnimation
 
+CanShoot.Changed:Connect(function()
+
+	
+
+end)
+
 tool.Equipped:Connect(function()
 	
 	if not config.GunModel:IsA("Model") then warn("Error Code L1: Unable to detect GunModel. (refer to documentation for more info)")
- 	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L5: Unable to detect FirePoint. (refer to documentation for more info)")
+ 	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L2: Unable to detect FirePoint. (refer to documentation for more info)")
 	
 	local char = tool.Parent
 	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
@@ -67,13 +89,26 @@ tool.Equipped:Connect(function()
 	local LoadedInspect = humanoid:LoadAnimation(Anims.InspectAnim)
 	
 	LoadedIdle:Play()
-	
+
 	
 end)
 
+Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
+
+	if config.Firemode == "Semi" and CanShoot == true then
+
+		curAmmo.Value -= 1
+		fireweapon(plr, pos)
+		
+
+	end
+
+end)
+
+
 tool.Unequipped:Connect(function()
 	
-	
+	game.ReplicatedStorage.Remote.DisconnectM6D:FireServer()
 	
 end)
 

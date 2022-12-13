@@ -11,6 +11,7 @@ config.Settings = {
 	BaseDamage = 20, -- Damage for all body parts excluding head
 	AmmoPerMag = 12, -- Ammo per magazine before having to reload (also includes starting ammo)
 	MaxAmmoPerMag = 12, -- max ammo per magazine
+	BulletSpeed = 100, -- bullet velocity (higher = faster)
 
 	-- Reload configuration
 
