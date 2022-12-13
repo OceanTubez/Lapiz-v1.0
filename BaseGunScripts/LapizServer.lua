@@ -12,11 +12,20 @@ local assets = tool:WaitForChild("Assets")
 local animfolder = tool:WaitForChild("Animations")
 local remotefold = tool:WaitForChild("Events")
 local CanShoot = tool:WaitForChild("CanShoot")
+local soundfolder = tool:WaitForChild("")
 
 local settingmodule = require(tool:WaitForChild("Configuration"))
 local FastCast = require(assets:WaitForChild("FastCastRedux"))
 
+local RunService = game:GetService("RunService")
+
 local config = settingmodule.Settings
+
+-- Setting up sounds
+
+local firesound = soundfolder:WaitForChild("FireSound")
+local reloadSound = soundfolder:WaitForChild("ReloadSound")
+local inspectsound = soundfolder:WaitForChild("InspectSound")
 
 -- Setting up fastcast
 
@@ -95,19 +104,38 @@ tool.Equipped:Connect(function()
 	
 	LoadedIdle:Play()
 
+	Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
+
+		if config.Firemode == "Semi" and CanShoot == true then
 	
-end)
+			curAmmo.Value -= 1
+			fireweapon(plr, pos)
+			LoadedShoot:Play()
+			CanShoot = false
+			
+	
+		elseif config.Firemode == "Auto" and CanShoot == true then
+	
+			RunService.RenderStepped:Connect(function(delta)
+				
+				curAmmo.Value -= 1
+				fireweapon(plr, pos)
+				LoadedShoot:Play()
+				CanShoot = false
 
-Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
+			end
+	
+		end
+	
+	end)
 
-	if config.Firemode == "Semi" and CanShoot == true then
+	Remotes.ChangeMagAmmo.OnServerEvent:Connect(function(plr)
 
-		curAmmo.Value -= 1
-		fireweapon(plr, pos)
-		
+		LoadedReload:Play()
 
-	end
+	end)
 
+	
 end)
 
 
@@ -115,10 +143,4 @@ tool.Unequipped:Connect(function()
 	
 	game.ReplicatedStorage.Remote.DisconnectM6D:FireServer()
 	
-end)
-
-Remotes.ChangeMagAmmo.OnServerEvent:Connect(function()
-
-
-
 end)
