@@ -150,6 +150,8 @@ tool.Equipped:Connect(function()
 
 			elseif config.ReloadAnimationLengthEnabled == true and config.
 
+				warn("Error L3: Reload Time colliding values (refer to documentation for more info)")
+
 			end
 	
 			local amounttochange = maxAmmo.Value - curAmmo.Value
