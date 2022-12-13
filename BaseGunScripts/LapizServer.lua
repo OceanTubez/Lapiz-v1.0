@@ -74,6 +74,9 @@ Anims.ReloadAnim.AnimationId = config.ReloadAnimation
 Anims.ShootAnim.AnimationId = config.FireAnimation
 Anims.InspectAnim.AnimationId = config.InspectAnimation
 
+local IsReloading = false
+local IsInspecting = false
+
 CanShoot.Changed:Connect(function()
 
 	if CanShoot.Value == false then
@@ -106,7 +109,7 @@ tool.Equipped:Connect(function()
 
 	Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
 
-		if config.Firemode == "Semi" and CanShoot == true then
+		if config.Firemode == "Semi" and CanShoot == true and IsReloading == false and IsInspecting == false then
 	
 			curAmmo.Value -= 1
 			fireweapon(plr, pos)
@@ -114,7 +117,7 @@ tool.Equipped:Connect(function()
 			CanShoot = false
 			
 	
-		elseif config.Firemode == "Auto" and CanShoot == true then
+		elseif config.Firemode == "Auto" and CanShoot == true and IsReloading == false and IsInspecting == false then
 	
 			RunService.RenderStepped:Connect(function(delta)
 				
@@ -131,12 +134,29 @@ tool.Equipped:Connect(function()
 
 	Remotes.ChangeMagAmmo.OnServerEvent:Connect(function(plr)
 
+		IsReloading = true
+
 		LoadedReload:Play()
 		reloadsound:Play()
 
-		
+		local amounttochange = maxAmmo.Value - curAmmo.Value
+
+		spareAmmo.Value -= amounttochange
+		curAmmo.Value = maxAmmo.Value
+
+		IsReloading = false
 
 	end)
+
+	Remotes.Inspect.OnServerEvent:Connect(function(plr)
+
+		IsInspecting = true
+
+		inspectsound:Play()
+		LoadedInspect:Play()
+		
+
+	end
 
 	
 end)
