@@ -51,10 +51,27 @@ Anims.InspectAnim.AnimationId = config.InspectAnimation
 
 tool.Equipped:Connect(function()
 	
+	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L5: Unable to detect FirePoint. (refer to documentation for more info)")
+	
 	local char = tool.Parent
 	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
 	char.Torso.ToolGrip.Part0 = char.Torso
 	char.Torso.ToolGrip.Part1 = config.GunModel.BodyAttach
+	
+	local humanoid = char:WaitForChild("Humanoid")
+	
+	local LoadedIdle = humanoid:LoadAnimation(Anims.IdleAnim)
+	local LoadedReload = humanoid:LoadAnimation(Anims.ReloadAnim)
+	local LoadedShoot = humanoid:LoadAnimation(Anims.ShootAnim)
+	local LoadedInspect = humanoid:LoadAnimation(Anims.InspectAnim)
+	
+	LoadedIdle:Play()
+	
+end)
+
+tool.Unequipped:Connect(function()
+	
+	
 	
 end)
 
