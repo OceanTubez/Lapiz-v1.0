@@ -1,6 +1,9 @@
 local RS = game:GetService("ReplicatedStorage")
-local Bindables = RS:WaitForChild("LapizObjects")
+local Bindables = RS:WaitForChild("LapizObjects"):WaitForChild("ClientBindables")
 
 local Bindables = {
-    SetupGui = 
+    SetupGui = Bindables:WaitForChild("SetupGui"),
+    UpdateClient = Bindables:WaitForChild("UpdateClient")
 }
+
+Bindables.SetupGui.Event:Connect(function())
