@@ -1,6 +1,10 @@
 local config = {}
 
 config.Settings = {
+	
+	-- REALLY IMPORTANT
+	
+	GunModel = script.Parent:WaitForChild("Gun"), -- Reference your gun model for the weapon
 
 	Firemode = "Semi", -- Can be any of these: Auto, Semi
 	Firerate = 0.1, -- In seconds (how many secs per bullet for auto)
@@ -34,7 +38,7 @@ config.Settings = {
 	ReloadAnimation = nil, -- must be proority action
 	InspectAnimation = nil,
 
-	-- Viewmodel (First Person) configuration
+	-- Viewmodel configuration [BETA] (feature enabled no choice yet)
 
 	ViewModelEnabled = true, -- recommended to be turned on
 	WalkCycle = true, -- Bobbing when moving?
