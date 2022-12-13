@@ -67,7 +67,12 @@ Anims.InspectAnim.AnimationId = config.InspectAnimation
 
 CanShoot.Changed:Connect(function()
 
-	
+	if CanShoot.Value == false then
+
+		task.wait(config.Firerate)
+		CanShoot.Value = true
+
+	end
 
 end)
 
