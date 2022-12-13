@@ -7,3 +7,4 @@ Error Codes:
 |:---------:|:-------:|:----------:|
 |L1         | Unable to find GunModel in Tool | Reference or rename the GunModel in Configuration|
 |L2         | Unable to find FirePoint in GunModel | Insert or Rename FirePoint in GunModel|
+|L3         | Colliding Reload time settings    | Only select one reload time setting in configuration.|

@@ -179,12 +179,16 @@ tool.Equipped:Connect(function()
 
 	end
 
+	tool.Unequipped:Connect(function()
+		
+		LoadedIdle:Stop()
+		LoadedReload:Stop()
+		LoadedInspect:Stop()
+		LoadedShoot:Stop()
+		game.ReplicatedStorage.Remote.DisconnectM6D:FireServer()
+		
+	end)
+
 	
 end)
 
-
-tool.Unequipped:Connect(function()
-	
-	game.ReplicatedStorage.Remote.DisconnectM6D:FireServer()
-	
-end)
