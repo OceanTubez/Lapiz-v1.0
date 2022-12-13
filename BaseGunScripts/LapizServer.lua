@@ -97,9 +97,6 @@ maxAmmo.Value = config.MaxAmmoPerMag
 spareAmmo.Value = config.StartingAmmo
 maxspareAmmo.Value = config.MaxAmmo
 
--- Setting up update function
-
-
 
 -- Setting up animations
 
@@ -138,6 +135,11 @@ tool.Equipped:Connect(function()
 	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
 	char.Torso.ToolGrip.Part0 = char.Torso
 	char.Torso.ToolGrip.Part1 = config.GunModel.BodyAttach
+
+	local foundPlayer = game:GetService("Players"):GetPlayerFromCharacter(char))
+
+	Remotes.SetupGui:FireClient(foundPlayer)
+	Remotes.Update:FireClient(foundPlayer, curAmmo.Value, spareAmmo.Value, tool.Name)
 	
 	local humanoid = char:WaitForChild("Humanoid")
 	
