@@ -49,15 +49,9 @@ config.Settings = {
 
 	-- For normal sounds, check the sounds folder.
 
-	-- For the 'precise' sounds, please configure them here.
+	-- For the 'precise' sounds, please go to each remote event connection to do that.
 
-	AnimationEventSounds = {
-
-		["ExampleEvent"] = function()
-
-			print("ExampleEvent Function ran!")
-
-		end)
+	
 
 	}
 
