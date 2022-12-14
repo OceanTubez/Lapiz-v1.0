@@ -132,9 +132,6 @@ tool.Equipped:Connect(function()
 	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L2: Unable to detect FirePoint. (refer to documentation for more info)") end
 
 	local char = tool.Parent
-	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
-	char.Torso.ToolGrip.Part0 = char.Torso
-	char.Torso.ToolGrip.Part1 = config.GunModel.BodyAttach
 
 	local foundPlayer = game:GetService("Players"):GetPlayerFromCharacter(char)
 
@@ -228,7 +225,6 @@ tool.Equipped:Connect(function()
 		LoadedReload:Stop()
 		LoadedInspect:Stop()
 		LoadedShoot:Stop()
-		game.ReplicatedStorage.Remote.DisconnectM6D:FireClient()
 
 	end)
 
