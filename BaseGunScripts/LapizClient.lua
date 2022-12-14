@@ -45,7 +45,7 @@ end)
 
 tool.Activated:Connect(function()
 
-	Remotes.Shoot:FireServer()
+	Remotes.Shoot:FireServer(game.Players.LocalPlayer:GetMouse().Hit.Position)
 
 end)
 
