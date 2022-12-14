@@ -34,16 +34,32 @@ config.Settings = {
 
 	-- Animation configuration
 
-	IdleAnimation = nil, -- Set to nil if none (must be looped if it is existing) priority idle
-	FireAnimation = nil, -- must be priority action
-	ReloadAnimation = nil, -- must be proority action
-	InspectAnimation = nil,
+	IdleAnimation = "rbxassetid://0", -- Set to "rbxassetid://0" if none (must be looped if it is existing) priority idle
+	FireAnimation = "rbxassetid://0", -- must be priority action
+	ReloadAnimation = "rbxassetid://0", -- must be proority action
+	InspectAnimation = "rbxassetid://0", -- must also be action
 
 	-- Viewmodel configuration [BETA] (feature enabled no choice yet)
 
 	ViewModelEnabled = true, -- recommended to be turned on
 	WalkCycle = true, -- Bobbing when moving?
 	Sway = true, -- Swaying when moving camera?
+
+	-- Sounds
+
+	-- For normal sounds, check the sounds folder.
+
+	-- For the 'precise' sounds, please configure them here.
+
+	AnimationEventSounds = {
+
+		["ExampleEvent"] = function()
+
+			print("ExampleEvent Function ran!")
+
+		end)
+
+	}
 
 }
 

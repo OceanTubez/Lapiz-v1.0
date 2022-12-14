@@ -177,7 +177,7 @@ tool.Equipped:Connect(function()
 
 	Remotes.ChangeMagAmmo.OnServerEvent:Connect(function(plr)
 
-		if not IsReloading then
+		if not IsReloading and spareAmmo.Value >= 1 then
 			IsReloading = true
 
 			LoadedReload:Play()
