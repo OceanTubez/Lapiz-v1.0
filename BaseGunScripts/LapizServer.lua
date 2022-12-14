@@ -12,7 +12,7 @@ local assets = tool:WaitForChild("Assets")
 local animfolder = tool:WaitForChild("Animations")
 local remotefold = tool:WaitForChild("Events")
 local CanShoot = tool:WaitForChild("CanShoot")
-local soundfolder = tool:WaitForChild("")
+local soundfolder = tool:WaitForChild("Sounds")
 
 local settingmodule = require(tool:WaitForChild("Configuration"))
 local FastCast = require(assets:WaitForChild("FastCastRedux"))
@@ -74,6 +74,8 @@ caster.RayHit:Connect(function(cast, result, velocity, bullet)
 
 		end
 	end
+	
+	game:GetService("Debris"):AddItem(bullet, 2)
 
 end)
 
