@@ -27,7 +27,7 @@ local UIS = game:GetService("UserInputService")
 
 UIS.InputBegan:Connect(function(input, gpe)
 
-	if input.InputType == Enum.InputType.Keyboard then
+	if input.UserInputType == Enum.UserInputType.Keyboard then
 
 		if input.KeyCode == Enum.KeyCode.R then
 
