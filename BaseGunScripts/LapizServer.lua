@@ -51,9 +51,9 @@ caster.RayHit:Connect(function(cast, result, velocity, bullet)
 	local human = char:FindFirstChild("Humanoid")
 
 	if char and human then
-		
+
 		if hit.Name == "Head" and config.HeadshotDamageEnabled then
-		
+
 			human:TakeDamage(config.HeadshotDamage)
 
 		elseif hit.Name == "Head" and config.HeadshotMultiEnabled then
@@ -63,7 +63,7 @@ caster.RayHit:Connect(function(cast, result, velocity, bullet)
 		elseif hit.Name == "Head" and config.HeadshotDamageEnabled and config.HeadshotMultiEnabled then
 
 			warn("Error Code L4: Headshot damage settings colliding values(check documentation for more info)")
-		
+
 		elseif hit.Name == "Head" and config.HeadshotMultiEnabled == false and config.HeadshotDamageEnabled == false then
 
 			human:TakeDamage(config.BaseDamage)
@@ -127,52 +127,52 @@ CanShoot.Changed:Connect(function()
 end)
 
 tool.Equipped:Connect(function()
-	
-	if not config.GunModel:IsA("Model") then warn("Error Code L1: Unable to detect GunModel. (refer to documentation for more info)")
- 	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L2: Unable to detect FirePoint. (refer to documentation for more info)")
-	
+
+	if not config.GunModel:IsA("Model") then warn("Error Code L1: Unable to detect GunModel. (refer to documentation for more info)") end
+	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L2: Unable to detect FirePoint. (refer to documentation for more info)") end
+
 	local char = tool.Parent
 	game.ReplicatedStorage.Remote.ConnectM6D:FireServer(config.GunModel.BodyAttach)
 	char.Torso.ToolGrip.Part0 = char.Torso
 	char.Torso.ToolGrip.Part1 = config.GunModel.BodyAttach
 
-	local foundPlayer = game:GetService("Players"):GetPlayerFromCharacter(char))
+	local foundPlayer = game:GetService("Players"):GetPlayerFromCharacter(char)
 
 	Remotes.SetupGui:FireClient(foundPlayer)
 	Remotes.Update:FireClient(foundPlayer, curAmmo.Value, spareAmmo.Value, tool.Name)
-	
+
 	local humanoid = char:WaitForChild("Humanoid")
-	
+
 	local LoadedIdle = humanoid:LoadAnimation(Anims.IdleAnim)
 	local LoadedReload = humanoid:LoadAnimation(Anims.ReloadAnim)
 	local LoadedShoot = humanoid:LoadAnimation(Anims.ShootAnim)
 	local LoadedInspect = humanoid:LoadAnimation(Anims.InspectAnim)
-	
+
 	LoadedIdle:Play()
 
 	Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
 
 		if config.Firemode == "Semi" and CanShoot == true and IsReloading == false and IsInspecting == false then
-	
+
 			curAmmo.Value -= 1
 			fireweapon(plr, pos)
 			LoadedShoot:Play()
 			CanShoot = false
-			
-	
+
+
 		elseif config.Firemode == "Auto" and CanShoot == true and IsReloading == false and IsInspecting == false then
-	
+
 			RunService.RenderStepped:Connect(function(delta)
-				
+
 				curAmmo.Value -= 1
 				fireweapon(plr, pos)
 				LoadedShoot:Play()
 				CanShoot = false
 
-			end
-	
+			end)
+
 		end
-	
+
 	end)
 
 	Remotes.ChangeMagAmmo.OnServerEvent:Connect(function(plr)
@@ -191,20 +191,20 @@ tool.Equipped:Connect(function()
 
 				task.wait(LoadedReload.Length)
 
-			elseif config.ReloadAnimationLengthEnabled == true and config.
+			elseif config.ReloadAnimationLengthEnabled == true and config.ReloadTimeEnabled then
 
 				warn("Error Code L3: Reload Time colliding values (refer to documentation for more info)")
-
 			end
-	
+			
 			local amounttochange = maxAmmo.Value - curAmmo.Value
-	
+
 			spareAmmo.Value -= amounttochange
 			curAmmo.Value = maxAmmo.Value
-	
-			IsReloading = false
-		end
 
+			IsReloading = false
+			
+		end
+		
 	end)
 
 	Remotes.Inspect.OnServerEvent:Connect(function(plr)
@@ -214,24 +214,28 @@ tool.Equipped:Connect(function()
 
 			inspectsound:Play()
 			LoadedInspect:Play()
-	
+
 			task.wait(LoadedInspect.Length)
-	
+
 			IsInspecting = false
 		end
 
-	end
+	end)
 
 	tool.Unequipped:Connect(function()
-		
+
 		LoadedIdle:Stop()
 		LoadedReload:Stop()
 		LoadedInspect:Stop()
 		LoadedShoot:Stop()
-		game.ReplicatedStorage.Remote.DisconnectM6D:FireServer()
-		
-	end)i
+		game.ReplicatedStorage.Remote.DisconnectM6D:FireClient()
 
-	
+	end)
+
 end)
+
+
+
+
+
 
