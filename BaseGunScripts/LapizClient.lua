@@ -22,7 +22,7 @@ local Remotes = {
 
 local Bindables = {
 	SetupGui = bindablesfolder:WaitForChild("SetupGui"),
-	Update = bindablesfolder:WaitForChild("Update")
+	UpdateClient = bindablesfolder:WaitForChild("UpdateClient")
 }
 
 local UIS = game:GetService("UserInputService")
@@ -74,6 +74,6 @@ end)
 
 Remotes.Update.OnClientEvent:Connect(function(currentammo, spareammo, toolname)
 
-	Bindables.Update:Fire(currentammo, spareammo, toolname)
+	Bindables.UpdateClient:Fire(currentammo, spareammo, toolname)
 
 end)

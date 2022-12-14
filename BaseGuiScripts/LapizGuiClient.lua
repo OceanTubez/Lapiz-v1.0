@@ -6,4 +6,25 @@ local Bindables = {
     UpdateClient = Bindables:WaitForChild("UpdateClient")
 }
 
-Bindables.SetupGui.Event:Connect(function())
+local Gui = script.Parent
+local MainFrame = Gui:WaitForChild("MainFrame")
+
+local DisplayLabels = {
+    GunName = MainFrame:WaitForChild("GunName"),
+    CurrentAmmo = MainFrame:WaitForChild("CurrentAmmo"),
+    SpareAmmo = MainFrame:WaitForChild("SpareAmmo")
+}
+
+Bindables.SetupGui.Event:Connect(function(visible)
+
+    MainFrame.Visible = visible
+
+end)
+
+Bindables.UpdateClient.Event:Connect(function(currentammo, spareammo, toolname)
+
+    DisplayLabels.GunName = toolname
+    DisplayLabels.CurrentAmmo = currentammo
+    DisplayLabels.SpareAmmo = spareammo
+
+end)
