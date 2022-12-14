@@ -151,7 +151,6 @@ tool.Equipped:Connect(function()
 
 	Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
 		
-		print("recieved data to shoot")
 
 		if config.Firemode == "Semi" and curAmmo.Value >= 1 and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
 
