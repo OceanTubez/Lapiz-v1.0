@@ -137,7 +137,7 @@ tool.Equipped:Connect(function()
 
 	local foundPlayer = game:GetService("Players"):GetPlayerFromCharacter(char)
 
-	Remotes.SetupGui:FireClient(foundPlayer)
+	Remotes.SetupGui:FireClient(foundPlayer, true)
 	Remotes.Update:FireClient(foundPlayer, curAmmo.Value, spareAmmo.Value, tool.Name)
 
 	local humanoid = char:WaitForChild("Humanoid")
@@ -153,7 +153,7 @@ tool.Equipped:Connect(function()
 		
 		print("recieved data to shoot")
 
-		if config.Firemode == "Semi" and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
+		if config.Firemode == "Semi" and curAmmo.Value >= 1 and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
 
 			curAmmo.Value -= 1
 			fireweapon(plr, pos)
@@ -161,7 +161,7 @@ tool.Equipped:Connect(function()
 			CanShoot.Value = false
 
 
-		elseif config.Firemode == "Auto" and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
+		elseif config.Firemode == "Auto" and curAmmo.Value >= 1 and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
 
 			RunService.RenderStepped:Connect(function(delta)
 
@@ -225,6 +225,7 @@ tool.Equipped:Connect(function()
 
 	tool.Unequipped:Connect(function()
 
+		SetupGui:FireClient(foundPlayer, false)
 		LoadedIdle:Stop()
 		LoadedReload:Stop()
 		LoadedInspect:Stop()
