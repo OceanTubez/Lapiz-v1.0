@@ -15,7 +15,9 @@ local bindablesfolder = game:GetService("ReplicatedStorage"):WaitForChild("Lapiz
 local Remotes = {
 	ChangeMagAmmo = remotefolder:WaitForChild("ChangeMagAmmo"),
 	Shoot = remotefolder:WaitForChild("Shoot"),
-	Inspect = remotefolder:WaitForChild("Inspect")
+	Inspect = remotefolder:WaitForChild("Inspect"),
+	Update = remotefolder:WaitForChild("Update"),
+	SetupGui = remotefolder:WaitForChild("SetupGui")
 }
 
 local Bindables = {
@@ -62,4 +64,16 @@ tool.Unequipped:Connect(function()
 	
 	game.ReplicatedStorage.Lapiz.ServerEvents.DisconnectM6D:FireServer()
 	
+end)
+
+Remotes.SetupGui.OnClientEvent:Connect(function(visible)
+
+	Bindables.SetupGui:Fire(visible)
+
+end)
+
+Remotes.Update.OnClientEvent:Connect(function(currentammo, spareammo, toolname)
+
+	Bindables.Update:Fire(currentammo, spareammo, toolname)
+
 end)
