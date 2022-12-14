@@ -35,7 +35,7 @@ local caster = FastCast.new()
 
 local function fireweapon(plr, mospos)
 
-	local origin = config.GunModel:WaitForChild("FirePoint").WorldPosition
+	local origin = config.GunModel:WaitForChild("FirePoint").Position
 	local vectordirection = (mospos - origin).Unit
 
 	caster:Fire(origin, vectordirection, config.BulletSpeed)
@@ -150,23 +150,25 @@ tool.Equipped:Connect(function()
 	LoadedIdle:Play()
 
 	Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
+		
+		print("recieved data to shoot")
 
-		if config.Firemode == "Semi" and CanShoot == true and IsReloading == false and IsInspecting == false then
+		if config.Firemode == "Semi" and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
 
 			curAmmo.Value -= 1
 			fireweapon(plr, pos)
 			LoadedShoot:Play()
-			CanShoot = false
+			CanShoot.Value = false
 
 
-		elseif config.Firemode == "Auto" and CanShoot == true and IsReloading == false and IsInspecting == false then
+		elseif config.Firemode == "Auto" and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
 
 			RunService.RenderStepped:Connect(function(delta)
 
 				curAmmo.Value -= 1
 				fireweapon(plr, pos)
 				LoadedShoot:Play()
-				CanShoot = false
+				CanShoot.Value = false
 
 			end)
 
