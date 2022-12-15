@@ -107,6 +107,8 @@ maxAmmo.Value = config.MaxAmmoPerMag
 spareAmmo.Value = config.StartingAmmo
 maxspareAmmo.Value = config.MaxAmmo
 
+if config.LimitedAmmo == false then spareAmmo.Value = math.huge end
+
 
 -- Setting up animations
 
