@@ -52,18 +52,18 @@ tool.Activated:Connect(function()
 end)
 
 tool.Equipped:Connect(function()
-	
+
 	local char = tool.Parent
 	game.ReplicatedStorage.Lapiz.ServerEvents.ConnectM6D:FireServer(config.GunModel.BodyAttach)
 	char.Torso.ToolGrip.Part0 = char.Torso
 	char.Torso.ToolGrip.Part1 = config.GunModel.BodyAttach
-	
+
 end)
 
 tool.Unequipped:Connect(function()
-	
+
 	game.ReplicatedStorage.Lapiz.ServerEvents.DisconnectM6D:FireServer()
-	
+
 end)
 
 Remotes.SetupGui.OnClientEvent:Connect(function(visible)
