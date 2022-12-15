@@ -14,6 +14,7 @@ local DisplayLabels = {
 	Ammo = MainFrame:WaitForChild("AmmoDisplay")
 }
 
+
 Bindables.SetupGui.Event:Connect(function(visible)
 
 	MainFrame.Visible = visible
