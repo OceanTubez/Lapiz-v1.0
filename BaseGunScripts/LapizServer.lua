@@ -15,6 +15,7 @@ local CanShoot = tool:WaitForChild("CanShoot")
 local soundfolder = tool:WaitForChild("Sounds")
 
 local settingmodule = require(tool:WaitForChild("Configuration"))
+local CustomFastCastConfig = require(tool:WaitForChild("FastCastConfiguration"))
 local FastCast = require(assets:WaitForChild("FastCastRedux"))
 
 local RunService = game:GetService("RunService")
@@ -33,12 +34,20 @@ FastCast.VisualizeCasts = false
 
 local caster = FastCast.new()
 
+local castbehavior = CustomFastCastConfig.GetCastBehavior()
+local castParams = CustomFastCastConfig.GetRaycastParams()
+
+castbehavior.CastBehavior.RaycastParams = castParams.RayCastParam
+
+if config.FastCastCustomizationEnabled == true then castbehavior.CastBehavior.CosmeticBulletTemplate = config.BulletTemplate end
+
+
 local function fireweapon(plr, mospos)
 
 	local origin = config.GunModel:WaitForChild("FirePoint").Position
 	local vectordirection = (mospos - origin).Unit
 
-	caster:Fire(origin, vectordirection, config.BulletSpeed)
+	caster:Fire(origin, vectordirection, config.BulletSpeed, castbehavior)
 
 end
 
@@ -51,8 +60,12 @@ caster.RayHit:Connect(function(cast, result, velocity, bullet)
 	local human = char:FindFirstChild("Humanoid")
 
 	if char and human then
+		
+		if hit.Name ~= "Head" then
+			
+			human:TakeDamage(config.BaseDamage)
 
-		if hit.Name == "Head" and config.HeadshotDamageEnabled then
+		elseif hit.Name == "Head" and config.HeadshotDamageEnabled then
 
 			human:TakeDamage(config.HeadshotDamage)
 
@@ -67,14 +80,9 @@ caster.RayHit:Connect(function(cast, result, velocity, bullet)
 		elseif hit.Name == "Head" and config.HeadshotMultiEnabled == false and config.HeadshotDamageEnabled == false then
 
 			human:TakeDamage(config.BaseDamage)
-
-		elseif hit.Name ~= "Head" then
-
-			human:TakeDamage(config.BaseDamage)
-
 		end
 	end
-	
+
 	game:GetService("Debris"):AddItem(bullet, 2)
 
 end)
@@ -128,7 +136,15 @@ CanShoot.Changed:Connect(function()
 
 end)
 
+local function updategui(plr)
+	
+	Remotes.Update:FireClient(plr, curAmmo.Value, spareAmmo.Value, tool.Name)
+	
+end
+
 tool.Equipped:Connect(function()
+	
+	castParams.RayCastParam.FilterDescendantsInstances = {tool.Parent, castbehavior.CastBehavior.CosmeticBulletContainer}
 
 	if not config.GunModel:IsA("Model") then warn("Error Code L1: Unable to detect GunModel. (refer to documentation for more info)") end
 	if not config.GunModel:FindFirstChild("FirePoint") then warn("Error Code L2: Unable to detect FirePoint. (refer to documentation for more info)") end
@@ -138,7 +154,7 @@ tool.Equipped:Connect(function()
 	local foundPlayer = game:GetService("Players"):GetPlayerFromCharacter(char)
 
 	Remotes.SetupGui:FireClient(foundPlayer, true)
-	Remotes.Update:FireClient(foundPlayer, curAmmo.Value, spareAmmo.Value, tool.Name)
+	updategui(foundPlayer)
 
 	local humanoid = char:WaitForChild("Humanoid")
 
@@ -150,7 +166,7 @@ tool.Equipped:Connect(function()
 	LoadedIdle:Play()
 
 	Remotes.Shoot.OnServerEvent:Connect(function(plr, pos)
-		
+
 
 		if config.Firemode == "Semi" and curAmmo.Value >= 1 and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
 
@@ -158,6 +174,8 @@ tool.Equipped:Connect(function()
 			fireweapon(plr, pos)
 			LoadedShoot:Play()
 			CanShoot.Value = false
+			firesound:Play()
+			updategui(foundPlayer)
 
 
 		elseif config.Firemode == "Auto" and curAmmo.Value >= 1 and CanShoot.Value == true and IsReloading == false and IsInspecting == false then
@@ -168,6 +186,8 @@ tool.Equipped:Connect(function()
 				fireweapon(plr, pos)
 				LoadedShoot:Play()
 				CanShoot.Value = false
+				firesound:Play()
+				updategui(foundPlayer)
 
 			end)
 
@@ -195,16 +215,18 @@ tool.Equipped:Connect(function()
 
 				warn("Error Code L3: Reload Time colliding values (refer to documentation for more info)")
 			end
-			
+
 			local amounttochange = maxAmmo.Value - curAmmo.Value
 
 			spareAmmo.Value -= amounttochange
-			curAmmo.Value = maxAmmo.Value
+			curAmmo.Value += amounttochange
+			
+			updategui(foundPlayer)
 
 			IsReloading = false
-			
+
 		end
-		
+
 	end)
 
 	Remotes.Inspect.OnServerEvent:Connect(function(plr)
@@ -224,7 +246,7 @@ tool.Equipped:Connect(function()
 
 	tool.Unequipped:Connect(function()
 
-		SetupGui:FireClient(foundPlayer, false)
+		Remotes.SetupGui:FireClient(foundPlayer, false)
 		LoadedIdle:Stop()
 		LoadedReload:Stop()
 		LoadedInspect:Stop()
@@ -233,7 +255,6 @@ tool.Equipped:Connect(function()
 	end)
 
 end)
-
 
 
 
