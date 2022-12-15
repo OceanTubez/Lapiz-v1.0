@@ -22,8 +22,6 @@ end)
 
 Bindables.UpdateClient.Event:Connect(function(currentammo, spareammo, toolname)
 	
-	print("recieve on gui")
-	
 	DisplayLabels.GunName.Text = toolname
 	DisplayLabels.Ammo.Text = currentammo.." / "..spareammo
 
